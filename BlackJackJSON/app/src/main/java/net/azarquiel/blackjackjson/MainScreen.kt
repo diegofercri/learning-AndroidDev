@@ -77,7 +77,6 @@ fun CustomContent(padding: PaddingValues, viewModel: MainViewModel) {
            modifier = Modifier.fillMaxSize(),
            contentScale = ContentScale.FillBounds
        )
-
    }
     Column(
         modifier = Modifier
@@ -139,7 +138,6 @@ fun MainContent(viewModel: MainViewModel) {
             )
         }
     }
-
 }
 
 @Composable
