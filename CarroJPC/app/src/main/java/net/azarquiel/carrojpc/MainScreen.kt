@@ -163,15 +163,12 @@ fun CustomContent(padding: PaddingValues, viewModel: MainViewModel) {
             .padding(padding),
     )
     {
-       val productos = viewModel.productos.observeAsState(ArrayList())
+       val productos = viewModel.productos
         LazyColumn {
-            items(productos.value) { item ->
+            items(productos) { item ->
                 MyCard(item)
-
             }
-
         }
-
     }
 }
 
@@ -183,7 +180,7 @@ fun MyCard(item: Producto) {
     modifier = Modifier
         .fillMaxWidth()
         .padding(6.dp, 3.dp),
-        /*
+        /* TODO
         .clickable {
             isComprado = !isComprado
         },
@@ -191,7 +188,7 @@ fun MyCard(item: Producto) {
     elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
     shape = RoundedCornerShape(16.dp),
     colors = CardDefaults.cardColors(
-        containerColor = if (isComprado) Color.LightGray else MaterialTheme.colorScheme.primary,
+        containerColor = if (isComprado) Color.LightGray else Color.DarkGray,
         contentColor = Color.White),
     ) {
         Column{

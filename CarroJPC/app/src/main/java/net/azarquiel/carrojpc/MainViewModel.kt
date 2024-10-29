@@ -2,6 +2,7 @@ package net.azarquiel.carrojpc
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,8 +17,10 @@ class MainViewModel(mainActivity: MainActivity): ViewModel() {
     private var _openDialog = MutableLiveData(false)
     val openDialog: MutableLiveData<Boolean> = _openDialog
 
-    private var _productos = MutableLiveData(ArrayList<Producto>())
-    val productos: LiveData<ArrayList<Producto>> = _productos
+    //private var _productos = MutableLiveData(ArrayList<Producto>())
+    //val productos: LiveData<ArrayList<Producto>> = _productos
+
+    var productos = mutableStateListOf<Producto>()
 
     init {
         carroSH = mainActivity.getSharedPreferences("carro", Context.MODE_PRIVATE)
@@ -34,16 +37,16 @@ class MainViewModel(mainActivity: MainActivity): ViewModel() {
         val editor = carroSH.edit()
         editor.putString(producto.id.toString(), productoJson)
         editor.apply()
-        _productos.value!!.add(0,producto)
+        productos.add(0,producto)
 
     }
     fun getProductos(){ //devuelve con el livedata
         val carroAll = carroSH.all
-        _productos.value = ArrayList()
+        productos.clear()
         for ((key, value) in carroAll) {
             val jsonProdcuto = value.toString()
             val producto = Gson().fromJson(jsonProdcuto, Producto::class.java)
-            _productos.value!!.add(producto)
+            productos.add(producto)
         }
     }
 
