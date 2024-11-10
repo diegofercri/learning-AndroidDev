@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:NumbersAddition/app/src/main/java/ies/azarquiel/net/numbersaddition/ui/theme/Color.kt
 package ies.azarquiel.net.numbersaddition.ui.theme
+========
+package net.azarquiel.carrojpc.ui.theme
+>>>>>>>> 22fc1fb733f2370cce4b4ce404efb3827735333a:CarroJPC/app/src/main/java/net/azarquiel/carrojpc/ui/theme/Color.kt
 
 import androidx.compose.ui.graphics.Color
 

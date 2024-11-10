@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:NumbersAddition/app/src/test/java/ies/azarquiel/net/numbersaddition/ExampleUnitTest.kt
 package ies.azarquiel.net.numbersaddition
+========
+package net.azarquiel.carrojpc
+>>>>>>>> 22fc1fb733f2370cce4b4ce404efb3827735333a:CarroJPC/app/src/test/java/net/azarquiel/carrojpc/ExampleUnitTest.kt
 
 import org.junit.Test
 

@@ -10,13 +10,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+<<<<<<<< HEAD:NumbersAddition/app/src/main/AndroidManifest.xml
         android:theme="@style/Theme.NumbersAddition"
+========
+        android:theme="@style/Theme.CarroJPC"
+>>>>>>>> 22fc1fb733f2370cce4b4ce404efb3827735333a:CarroJPC/app/src/main/AndroidManifest.xml
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+<<<<<<<< HEAD:NumbersAddition/app/src/main/AndroidManifest.xml
             android:theme="@style/Theme.NumbersAddition">
+========
+            android:theme="@style/Theme.CarroJPC">
+>>>>>>>> 22fc1fb733f2370cce4b4ce404efb3827735333a:CarroJPC/app/src/main/AndroidManifest.xml
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:NumbersAddition/app/src/main/java/ies/azarquiel/net/numbersaddition/ui/theme/Theme.kt
 package ies.azarquiel.net.numbersaddition.ui.theme
+========
+package net.azarquiel.carrojpc.ui.theme
+>>>>>>>> 22fc1fb733f2370cce4b4ce404efb3827735333a:CarroJPC/app/src/main/java/net/azarquiel/carrojpc/ui/theme/Theme.kt
 
 import android.app.Activity
 import android.os.Build
@@ -34,7 +38,11 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
+<<<<<<<< HEAD:NumbersAddition/app/src/main/java/ies/azarquiel/net/numbersaddition/ui/theme/Theme.kt
 fun NumbersAdditionTheme(
+========
+fun CarroJPCTheme(
+>>>>>>>> 22fc1fb733f2370cce4b4ce404efb3827735333a:CarroJPC/app/src/main/java/net/azarquiel/carrojpc/ui/theme/Theme.kt
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
