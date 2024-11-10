@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -24,6 +25,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -54,9 +56,10 @@ fun CustomTopBar() {
 
 @Composable
 fun CustomContent(padding: PaddingValues, viewModel: MainViewModel) {
-    // Observamos los datos del ViewModel
     val fivePersonIds by viewModel.fivePersonIds.observeAsState(emptyList())
     val fivePersonNames by viewModel.fivePersonNames.observeAsState(emptyList())
+    val idColors by viewModel.idColors.observeAsState(List(5) { Color.Gray })
+    val nameColors by viewModel.nameColors.observeAsState(List(5) { Color.Gray })
 
     Column(
         modifier = Modifier
@@ -79,10 +82,9 @@ fun CustomContent(padding: PaddingValues, viewModel: MainViewModel) {
                         .weight(1f)
                         .padding(3.dp),
                     onClick = {
-                        // Lógica para el botón de ID (personalizar según la funcionalidad)
-                        Log.d("IDButton", "Clicked ID: ${fivePersonIds[index]}")
                         viewModel.pressedId(fivePersonIds[index])
                     },
+                    colors = ButtonDefaults.buttonColors(containerColor = idColors[index]),
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(6.dp)
                 ) {
@@ -97,10 +99,9 @@ fun CustomContent(padding: PaddingValues, viewModel: MainViewModel) {
                         .weight(2f)
                         .padding(3.dp),
                     onClick = {
-                        // Lógica para el botón de nombre (personalizar según la funcionalidad)
-                        Log.d("NameButton", "Clicked Name: ${fivePersonNames[index]}")
                         viewModel.pressedName(fivePersonNames[index])
                     },
+                    colors = ButtonDefaults.buttonColors(containerColor = nameColors[index]),
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(12.dp)
                 ) {

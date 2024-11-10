@@ -2,6 +2,7 @@ package net.azarquiel.famouspersonsgame
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,13 @@ class MainViewModel(context: Context) : ViewModel() {
     private val _fivePersonNames = MutableLiveData<List<String>>()
     val fivePersonNames: LiveData<List<String>> = _fivePersonNames
 
+    // Definimos colores en el ViewModel para observar los cambios en la UI
+    private val _idColors = MutableLiveData<List<Color>>()
+    val idColors: LiveData<List<Color>> = _idColors
+
+    private val _nameColors = MutableLiveData<List<Color>>()
+    val nameColors: LiveData<List<Color>> = _nameColors
+
     // Lista completa de personas
     private val persons = ArrayList<Person>()
     private var id: String? = null
@@ -26,6 +34,8 @@ class MainViewModel(context: Context) : ViewModel() {
     init {
         loadPersons(context)
         setupGameData()
+        _idColors.value = List(5) { Color.DarkGray }
+        _nameColors.value = List(5) { Color.DarkGray }
     }
 
     private fun loadPersons(context: Context) {
@@ -67,16 +77,41 @@ class MainViewModel(context: Context) : ViewModel() {
         if (id != null && name != null) {
             var found = false
             for (person in persons) {
-                if (person.name == name && "p"+person.id == id) {
-                    Log.d("MainViewModel", "Person found: $person")
+                if (person.name == name && "p" + person.id == id) {
                     found = true
+                    break
                 }
             }
+
+            // Actualizamos los colores según si el par es correcto o incorrecto
+            val idIndex = _fivePersonIds.value?.indexOf(id) ?: -1
+            val nameIndex = _fivePersonNames.value?.indexOf(name) ?: -1
+
+            if (idIndex != -1 && nameIndex != -1) {
+                _idColors.value = _idColors.value?.toMutableList()?.apply {
+                    this[idIndex] = if (found) Color.Green else Color.Red
+                }
+                _nameColors.value = _nameColors.value?.toMutableList()?.apply {
+                    this[nameIndex] = if (found) Color.Green else Color.Red
+                }
+            }
+
+            // Limpiamos las selecciones
             id = null
             name = null
-            if (!found) {
-                Log.d("MainViewModel", "Person not found")
+
+            // Verifica si todos los pares están en verde para reiniciar el juego
+            if (_idColors.value?.all { it == Color.Green } == true &&
+                _nameColors.value?.all { it == Color.Green } == true) {
+                restartGame()
             }
         }
+    }
+
+    // Reinicia los datos del juego (IDs, nombres y colores)
+    private fun restartGame() {
+        setupGameData()
+        _idColors.value = List(5) { Color.Gray }
+        _nameColors.value = List(5) { Color.Gray }
     }
 }
