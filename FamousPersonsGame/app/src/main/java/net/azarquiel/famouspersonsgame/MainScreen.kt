@@ -1,5 +1,7 @@
 package net.azarquiel.famouspersonsgame
 
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,9 +23,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-
 
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
@@ -48,71 +52,78 @@ fun CustomTopBar() {
     )
 }
 
-
 @Composable
 fun CustomContent(padding: PaddingValues, viewModel: MainViewModel) {
-
-    // Observadores de LiveData para las imágenes, nombres y colores
-    val images by viewModel.images.observeAsState(emptyList())
-    val names by viewModel.names.observeAsState(emptyList())
+    // Observamos los datos del ViewModel
+    val fivePersonIds by viewModel.fivePersonIds.observeAsState(emptyList())
+    val fivePersonNames by viewModel.fivePersonNames.observeAsState(emptyList())
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),)
-    {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        )
-        {
-            Column(
+            .padding(padding),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        fivePersonIds.indices.forEach { index ->
+            Row(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxWidth()
                     .weight(1f),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            )
-            {
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Botón para el ID de la persona
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(5.dp)
-                        .weight(1f),
+                        .fillMaxHeight()
+                        .weight(1f)
+                        .padding(3.dp),
                     onClick = {
-                        // Lógica para la selección de imagen
+                        // Lógica para el botón de ID (personalizar según la funcionalidad)
+                        Log.d("IDButton", "Clicked ID: ${fivePersonIds[index]}")
+                        viewModel.pressedId(fivePersonIds[index])
                     },
                     shape = RoundedCornerShape(10.dp),
-                    contentPadding = PaddingValues(12.dp)
+                    contentPadding = PaddingValues(6.dp)
                 ) {
-                    Text("IMG")
+                    RoundedImage(imageId = fivePersonIds[index])
+                    Text(text = "ID: ${fivePersonIds[index]}")
                 }
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(2f),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            )
-            {
+
+                // Botón para el Nombre de la persona
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(5.dp)
-                        .weight(1f),
+                        .fillMaxHeight()
+                        .weight(2f)
+                        .padding(3.dp),
                     onClick = {
-                        // Lógica para la selección de nombre
+                        // Lógica para el botón de nombre (personalizar según la funcionalidad)
+                        Log.d("NameButton", "Clicked Name: ${fivePersonNames[index]}")
+                        viewModel.pressedName(fivePersonNames[index])
                     },
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(12.dp)
                 ) {
-                    Text("Name")
+                    Text(text = "${fivePersonNames[index]}")
                 }
             }
         }
+    }
+}
+
+@Composable
+fun RoundedImage(imageId: String) {
+    val context = LocalContext.current
+    val imageResId = context.resources.getIdentifier(imageId, "drawable", context.packageName)
+
+    if (imageResId != 0) {
+        Image(
+            painter = painterResource(id = imageResId),
+            contentDescription = null,
+            contentScale = ContentScale.Crop, // Ajusta la imagen para cubrir sin dejar espacio en blanco
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(6.dp))
+        )
     }
 }
