@@ -7,32 +7,31 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 import java.io.Serializable
 
-@Entity(tableName = "coast")
+@Entity(tableName = "costa")
 data class Coast(@PrimaryKey
                  var id : Int=0,
-                 var name : String="",
-                 var image : String="",
-                 var description : String=""):Serializable
+                 var nombre : String="",
+                 var imagen : String="",
+                 var descripcion : String=""):Serializable
 
 
-@Entity(tableName = "beach",
+@Entity(tableName = "playa",
     foreignKeys = [ForeignKey(entity= Coast::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("coast"))])
+        childColumns = arrayOf("costa"))])
 data class Beach(@PrimaryKey
                  var id : Int=0,
-                 var coast : Int=0,
-                 var blue : Int=0,
-                 var name : String="",
-                 var image : String="",
-                 var description : String=""):Serializable
+                 var costa : Int=0,
+                 var azul : Int=0,
+                 var nombre : String="",
+                 var imagen : String=""):Serializable
 
 
 data class CoastWithBeaches(
     @Embedded val coast: Coast,
     @Relation(
         parentColumn = "id",
-        entityColumn = "coast"
+        entityColumn = "costa"
     )
     val beaches: List<Beach>
 ):Serializable

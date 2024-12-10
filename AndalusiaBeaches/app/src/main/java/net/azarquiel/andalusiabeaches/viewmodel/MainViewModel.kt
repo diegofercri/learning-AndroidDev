@@ -35,7 +35,7 @@ class MainViewModel (mainActivity: MainActivity): ViewModel(){
             _coasts.value = coasts
         })
         isBlue = false
-        _blue.value = R.color.gris
+        _blue.value = R.drawable.not_blue_beach
     }
 
     fun getAllBeaches(coast:Int) {
@@ -60,6 +60,6 @@ class MainViewModel (mainActivity: MainActivity): ViewModel(){
     fun changeBlue() {
         isBlue = !isBlue
         _beaches.value = if (isBlue) blueBeaches else allBeaches
-        _blue.value = if (isBlue) R.color.amarillo else R.color.gris
+        _blue.value = if (isBlue) R.drawable.blue_beach else R.drawable.not_blue_beach
     }
 }

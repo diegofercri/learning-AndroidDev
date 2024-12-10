@@ -1,5 +1,6 @@
 package net.azarquiel.andalusiabeaches.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -54,7 +56,7 @@ fun CoastDetailScreen(navController: NavHostController, viewModel: MainViewModel
 @Composable
 fun DetailTopBar(coast: Coast?) {
     TopAppBar(
-        title = { coast?.let { Text(text = coast.name) }},
+        title = { coast?.let { Text(text = coast.nombre) }},
         colors = topAppBarColors(
             containerColor = MaterialTheme.colorScheme.secondary,
             titleContentColor = MaterialTheme.colorScheme.background
@@ -93,22 +95,30 @@ fun ShowCoast(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
-            model = coast.image,
+            model = coast.imagen,
             contentDescription = "Coast",
             modifier = Modifier.fillMaxWidth(),
             contentScale = ContentScale.FillWidth
         )
         Text(
-            text = coast.name,
+            text = coast.nombre,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = colorResource(R.color.azulo))
                 .padding(vertical = 40.dp),
             color = colorResource(R.color.azulc),
             textAlign = TextAlign.Center,
-            fontSize = 22.sp,
+            fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             )
+        Spacer(Modifier.height(30.dp))
+        Text(
+            text = coast.descripcion,
+            color = colorResource(R.color.azulo),
+            fontSize = 20.sp,
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+        )
         Spacer(Modifier.height(30.dp))
         Row(
             modifier = Modifier
@@ -118,27 +128,18 @@ fun ShowCoast(
                     navController.navigate(route = AppScreens.BeachesScreen.route)
                 },
             horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(Icons.Filled.Home, "home",
-                tint = colorResource(R.color.azulo),
-                modifier = Modifier.size(28.dp))
-            Text(
-                text = " Site...",
-                color = colorResource(R.color.azulo),
-                fontSize = 22.sp,
+            Image(
+                painter = painterResource(R.drawable.beach_icon),
+                contentDescription = "logo",
+                modifier = Modifier.size(46.dp)
             )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(horizontal = 10.dp),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Icon(
-                Icons.Filled.Star,
-                contentDescription = "star",
+            Text(
+                text = " Playas...",
+                color = colorResource(R.color.azulo),
+                fontSize = 26.sp,
+                fontWeight = FontWeight.Bold,
             )
         }
     }

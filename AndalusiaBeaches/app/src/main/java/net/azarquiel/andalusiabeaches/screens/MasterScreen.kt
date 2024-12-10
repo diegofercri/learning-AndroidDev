@@ -4,9 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -85,33 +87,35 @@ fun MasterContent(
 @Composable
 fun CardCoast(coast: Coast, navController: NavHostController) {
     Card(
-        modifier = Modifier.padding(2.dp)
+        modifier = Modifier
+            .padding(horizontal = 10.dp, vertical = 5.dp)
             .clickable {
                 navController.currentBackStackEntry?.savedStateHandle?.set("coast", coast)
                 navController.navigate(route = AppScreens.CoastDetailScreen.route)
             },
         shape = RoundedCornerShape(10.dp),
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = colorResource(R.color.azulc)),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+            verticalArrangement = Arrangement.Center,
         ) {
             AsyncImage(
-                model = coast.image,
+                model = coast.imagen,
                 contentDescription = "Coast",
-                modifier = Modifier.size(100.dp),
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
             )
             Text(
-                text = coast.name,
+                text = coast.nombre,
                 color = colorResource(R.color.azulo),
                 textAlign = TextAlign.Center,
                 fontSize = 22.sp,
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
+                    .padding(vertical = 10.dp)
                     .fillMaxWidth()
             )
         }

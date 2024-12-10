@@ -7,17 +7,17 @@ import androidx.room.Transaction
 
 @Dao
 interface CoastDAO{
-    @Query("SELECT * FROM coast ORDER BY name")
+    @Query("SELECT * FROM costa ORDER BY nombre")
     fun getCoasts(): LiveData<List<Coast>>
 }
 
 @Dao
 interface BeachesDAO {
     @Transaction
-    @Query("SELECT * FROM beach WHERE coast = :coast ORDER BY name")
+    @Query("SELECT * FROM playa WHERE costa = :coast ORDER BY nombre")
     fun getBeachesByCoast(coast:Int) : LiveData<List<Beach>>
 
     @Transaction
-    @Query("SELECT * FROM beach WHERE blue = 1 AND coast = :coast ORDER BY name")
+    @Query("SELECT * FROM playa WHERE azul = 1 AND costa = :coast ORDER BY nombre")
     fun getBlueBeachesByCoast(coast:Int) : LiveData<List<Beach>>
 }
