@@ -42,6 +42,7 @@ fun GafasScreen(navController: NavHostController, viewModel: MainViewModel) {
 @Composable
 fun GafasTopBar(viewModel: MainViewModel) {
     val usuario by viewModel.usuario.observeAsState()
+
     TopAppBar(
         title = {
             Row(
@@ -49,7 +50,7 @@ fun GafasTopBar(viewModel: MainViewModel) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Gafas",
+                    text = "Gafas" + if (usuario?.nick != null) " - ${usuario?.nick}" else "",
                     Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp)
                         .weight(3f)
                 )

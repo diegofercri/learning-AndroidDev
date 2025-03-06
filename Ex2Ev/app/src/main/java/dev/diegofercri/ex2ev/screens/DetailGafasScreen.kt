@@ -1,15 +1,20 @@
 package dev.diegofercri.ex2ev.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -18,20 +23,28 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import dev.diegofercri.ex2ev.R
+import dev.diegofercri.ex2ev.model.Comentario
 import dev.diegofercri.ex2ev.model.Gafa
 import dev.diegofercri.ex2ev.viewmodel.MainViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun DetailGafasScreen(navController: NavHostController, viewModel: MainViewModel) {
     val gafa = navController.previousBackStackEntry?.savedStateHandle?.get<Gafa>("gafa")
+    val comentarios by viewModel.comentarios.observeAsState(emptyList())
 
     gafa?.let {
+        // Cargar comentarios al iniciar la pantalla
+        LaunchedEffect(gafa.id) {
+            viewModel.getComentarios(gafa.id)
+        }
+
         Scaffold(
-            topBar = { DetailGafasTopBar() },
-            floatingActionButton = { DetailGafaFab(viewModel, navController, gafa) },
+            topBar = { DetailGafasTopBar(viewModel) },
             floatingActionButtonPosition = FabPosition.Center,
             content = { padding ->
-                DetailGafasContent(padding, gafa)
+                DetailGafasContent(padding, gafa, comentarios, viewModel)
             }
         )
     }
@@ -39,14 +52,21 @@ fun DetailGafasScreen(navController: NavHostController, viewModel: MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailGafasTopBar() {
+fun DetailGafasTopBar(viewModel: MainViewModel) {
+    val usuario by viewModel.usuario.observeAsState()
+
     TopAppBar(
         title = {
-            Text(
-                text = "Detalle de Gafa",
-                Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp),
-                textAlign = TextAlign.Center
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Detalle de Gafa" + if (usuario?.nick != null) " - ${usuario?.nick}" else "",
+                    Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp)
+                        .weight(3f)
+                )
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colorResource(R.color.purple_800),
@@ -58,7 +78,9 @@ fun DetailGafasTopBar() {
 @Composable
 fun DetailGafasContent(
     padding: PaddingValues,
-    gafa: Gafa
+    gafa: Gafa,
+    comentarios: List<Comentario>,
+    viewModel: MainViewModel
 ) {
     Column(
         modifier = Modifier
@@ -67,6 +89,19 @@ fun DetailGafasContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ShowGafa(gafa)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Lista de comentarios
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            items(comentarios) { comentario ->
+                CardComentario(comentario)
+            }
+        }
     }
 }
 
@@ -140,17 +175,49 @@ fun ShowGafa(gafa: Gafa) {
 }
 
 @Composable
-fun DetailGafaFab(viewModel: MainViewModel, navController: NavHostController, gafa: Gafa) {
-    FloatingActionButton(
-        containerColor = colorResource(R.color.purple_700),
-        contentColor = MaterialTheme.colorScheme.background,
-        onClick = {
-            viewModel.setDialogComentario(true)
-        }
-    ) {
-        Icon(
-            Icons.Filled.Edit,
-            contentDescription = "Añadir Comentario"
+fun CardComentario(comentario: Comentario) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White,
+            contentColor = Color.Black
         )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            // Fecha y nick del usuario
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = comentario.fecha,
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
+                Text(
+                    text = comentario.nick,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Contenido del comentario
+            Text(
+                text = comentario.comentario,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+        }
     }
 }

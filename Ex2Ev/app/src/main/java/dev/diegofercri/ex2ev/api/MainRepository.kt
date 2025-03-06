@@ -13,6 +13,7 @@ class MainRepository() {
         }
         return emptyList()
     }
+
     suspend fun getGafas(idmarca:Int): List<Gafa> {
         val webResponse = service.getGafas(idmarca).await()
         if (webResponse.isSuccessful) {
@@ -20,6 +21,7 @@ class MainRepository() {
         }
         return emptyList()
     }
+
     suspend fun getUsuarios(): List<Usuario> {
         val webResponse = service.getUsuarios().await()
         if (webResponse.isSuccessful) {
@@ -27,6 +29,7 @@ class MainRepository() {
         }
         return emptyList()
     }
+
     suspend fun getComentarios(idgafa:Int): List<Comentario> {
         val webResponse = service.getComentarios(idgafa).await()
         if (webResponse.isSuccessful) {
@@ -50,6 +53,7 @@ class MainRepository() {
         }
         return null
     }
+
     suspend fun saveComentario(idgafa: Int, comentario: Comentario): Comentario? {
         val webResponse = service.saveComentario(idgafa, comentario)
         if (webResponse.isSuccessful) {

@@ -70,6 +70,7 @@ class MainViewModel(mainActivity: MainActivity): ViewModel()  {
             null
         }
     }
+
     fun login(nick: String, pass: String) {
         dataviewModel.getDataUsuarioPorNickPass(nick, pass).observe(mainActivity) { userlogin ->
             if (userlogin != null) {
@@ -103,6 +104,7 @@ class MainViewModel(mainActivity: MainActivity): ViewModel()  {
             }
         }
     }
+
     fun getComentarios(idgafa: Int): LiveData<List<Comentario>> {
         dataviewModel.getComentarios(idgafa).observe(mainActivity) {
             it?.let {
@@ -111,6 +113,7 @@ class MainViewModel(mainActivity: MainActivity): ViewModel()  {
         }
         return comentarios
     }
+
     fun saveComentario(idgafa: Int, comentario: Comentario) {
         dataviewModel.saveComentario(idgafa, comentario).observe(mainActivity) {
             it?.let {
